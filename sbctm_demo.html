@@ -248,21 +248,17 @@
 document.querySelectorAll('button.playBtn').forEach(button => {
     const audio = button.previousElementSibling;
     button.addEventListener('click', () => {
+        // 他の音声は停止
         document.querySelectorAll('audio').forEach(a => {
-            if(a !== audio) a.pause();
+            if(a !== audio) {
+                a.pause();
+                a.currentTime = 0; // 停止時に巻き戻す
+            }
         });
 
-        if (audio.paused) {
-            audio.play();
-            button.textContent = '⏸';
-        } else {
-            audio.pause();
-            button.textContent = '▶';
-        }
-    });
-
-    audio.addEventListener('ended', () => {
-        button.textContent = '▶';
+        // 自分の音声を最初から再生
+        audio.currentTime = 0;
+        audio.play();
     });
 });
 </script>
