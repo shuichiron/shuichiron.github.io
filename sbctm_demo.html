@@ -249,25 +249,27 @@ document.querySelectorAll('button.playBtn').forEach(button => {
     const audio = button.previousElementSibling;
     button.addEventListener('click', () => {
         if (audio.paused || audio.ended) {
-            // 他の音声は停止して巻き戻す
+            // 他の音声を全部停止＆巻き戻し、ボタンも▶に戻す
             document.querySelectorAll('audio').forEach(a => {
-                if (a !== audio) {
-                    a.pause();
-                    a.currentTime = 0;
-                }
+                a.pause();
+                a.currentTime = 0;
             });
+            document.querySelectorAll('button.playBtn').forEach(b => {
+                b.textContent = '▶';
+            });
+
             // 自分を再生
             audio.currentTime = 0;
             audio.play();
-            button.textContent = '■';   // 再生中は停止ボタン表示
+            button.textContent = '■';
         } else {
-            // 停止して巻き戻し
+            // 停止＆巻き戻し、自分のボタンを▶に戻す
             audio.pause();
             audio.currentTime = 0;
-            button.textContent = '▶';   // 停止中は再生ボタン表示
+            button.textContent = '▶';
         }
     });
-    // 再生が最後までいったら表示を▶に戻す
+    // 再生が終わったら自分のボタンを▶に戻す
     audio.addEventListener('ended', () => {
         button.textContent = '▶';
     });
